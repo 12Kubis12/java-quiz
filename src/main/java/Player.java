@@ -27,7 +27,7 @@ public class Player {
         Arrays.sort(lettersA);
         Arrays.sort(lettersB);
 
-        return Arrays.equals(lettersA,lettersB);
+        return Arrays.equals(lettersA, lettersB);
     }
 
     public void setCorrectAnswers(int correctAnswers) {

@@ -67,6 +67,7 @@ public class Main {
                     start = "q";
                     break;
                 }
+
                 player.checkAnswer(playerAnswer, question);
             }
 

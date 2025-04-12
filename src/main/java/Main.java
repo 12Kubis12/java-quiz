@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<Quiz> quizzes = createQuizzes();
         Scanner scanner = new Scanner(System.in);
-
+//        Start the quiz.
         while (true) {
             Player player = new Player();
             Quiz quiz = null;
@@ -17,7 +17,7 @@ public class Main {
             for (int i = 0; i < quizzes.size(); i++) {
                 System.out.println("\"" + quizzes.get(i).getName() + "\"" + " -> " + (i + 1));
             }
-
+//            Check input for quiz selection.
             while (true) {
                 try {
                     start = scanner.nextLine().replaceAll("\\s", "");
@@ -30,7 +30,7 @@ public class Main {
                     System.out.println("Invalid input. Try again!!!");
                 }
             }
-
+//            Stop application if "q" is tipped.
             if (start.equals("q")) {
                 System.out.println("Application Quiz is closed. :(");
                 break;
@@ -38,19 +38,20 @@ public class Main {
 
             System.out.println("You chose a quiz about " + quiz.getName() + ". Good luck!!!");
             System.out.println();
-
+//            Printing questions.
             for (Question question : quiz.getQuestions()) {
                 question.showQuestion();
                 String questionType = question.getType();
+                String testString = "abcd".substring(0, question.getAnswers().size());
                 String playerAnswer;
-
+//                Check input for answer selections.
                 if (!questionType.equals("write")) {
                     while (true) {
                         try {
                             playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
                             if (playerAnswer.equals("q")) {
                                 break;
-                            } else if (!checkInput("abcd", playerAnswer) || playerAnswer.isEmpty() ||
+                            } else if (!checkInput(testString, playerAnswer) || playerAnswer.isEmpty() ||
                                     (questionType.equals("one") && playerAnswer.length() > 1)) {
                                 throw new Exception("Invalid input. Try again!!!");
                             }
@@ -62,7 +63,7 @@ public class Main {
                 } else {
                     playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
                 }
-
+//                Stop application if "q" is tipped.
                 if (playerAnswer.equals("q")) {
                     start = "q";
                     break;
@@ -70,7 +71,7 @@ public class Main {
 
                 player.checkAnswer(playerAnswer, question);
             }
-
+//            Stop application if "q" is tipped.
             if (start.equals("q")) {
                 System.out.println("Application Quiz is closed. :(");
                 break;
@@ -91,7 +92,7 @@ public class Main {
         }
         return true;
     }
-
+//    Create quizzes.
     public static ArrayList<Quiz> createQuizzes() {
         return new ArrayList<>() {{
             add(new Quiz("Math", new ArrayList<>() {{

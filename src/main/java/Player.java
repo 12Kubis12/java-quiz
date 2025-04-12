@@ -14,7 +14,7 @@ public class Player {
 
     public void printStats(Quiz quiz) {
         System.out.println(quiz.getName() + " quiz is finished!!!");
-        System.out.println("You score is: " + this.correctAnswers);
+        System.out.println("Your score is: " + this.correctAnswers);
         System.out.println();
     }
 

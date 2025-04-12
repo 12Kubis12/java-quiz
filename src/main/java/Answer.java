@@ -1,6 +1,6 @@
 public class Answer {
-    private String answerText;
-    private boolean correct;
+    private final String answerText;
+    private final boolean correct;
 
     Answer(String answerText, boolean correct) {
         this.answerText = answerText;

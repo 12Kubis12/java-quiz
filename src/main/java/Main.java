@@ -8,25 +8,39 @@ public class Main {
 
         while (true) {
             Player player = new Player();
+            Quiz quiz = null;
+            String start;
 
-            System.out.println("Choose quiz from these options: ");
+            System.out.println("You can end the application when you write \"q\". \nChoose quiz from these options: ");
             for (int i = 0; i < quizzes.size(); i++) {
                 System.out.println("\"" + quizzes.get(i).getName() + "\"" + " -> " + (i + 1));
             }
 
-            String index = scanner.nextLine();
-            if (index.equals("q")){
+            while (true) {
+                try {
+                    start = scanner.nextLine().replaceAll("\\s", "");
+                    if (start.equals("q")) {
+                        break;
+                    }
+                    quiz = quizzes.get(Integer.parseInt(start) - 1);
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Try again!!!");
+                }
+            }
+
+            if (start.equals("q")) {
                 System.out.println("Application Quiz is closed. :(");
                 break;
             }
 
-            Quiz quiz = quizzes.get(Integer.parseInt(index) - 1);
             System.out.println("You chose a quiz about " + quiz.getName() + ". Good luck!!!");
             System.out.println();
 
-            for (Question question: quiz.getQuestions()) {
+            for (Question question : quiz.getQuestions()) {
                 question.showQuestion();
-                String playerAnswer = scanner.nextLine();
+                String playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
+                System.out.println("Invalid input. Try again!!!");
                 player.checkAnswer(playerAnswer, question);
             }
 

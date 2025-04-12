@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class Quiz {
-    private String name;
-    private ArrayList<Question> questions;
+    private final String name;
+    private final ArrayList<Question> questions;
 
     public Quiz(String name, ArrayList<Question> questions) {
         this.name = name;

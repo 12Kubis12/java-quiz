@@ -29,18 +29,6 @@ public class Question {
         }
     }
 
-    public String getQuestionText() {
-        return questionText;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public ArrayList<Answer> getAnswers() {
-        return answers;
-    }
-
     public String getCorrectAnswer() {
         String target = "";
         if (this.type.equals("one")) {
@@ -60,6 +48,18 @@ public class Question {
             target = this.answers.get(0).getAnswerText();
         }
         return target;
+    }
+
+    public String getQuestionText() {
+        return questionText;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public ArrayList<Answer> getAnswers() {
+        return answers;
     }
 }
 

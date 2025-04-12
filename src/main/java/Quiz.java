@@ -1,10 +1,20 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class Quiz {
-        private ArrayList<Question> questions;
+    private String name;
+    private ArrayList<Question> questions;
 
-    public Quiz(ArrayList<Question> questions) {
+    public Quiz(String name, ArrayList<Question> questions) {
+        this.name = name;
         this.questions = questions;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Question> getQuestions() {
+        return questions;
+    }
+
 }

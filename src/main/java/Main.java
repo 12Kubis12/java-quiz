@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -11,7 +12,8 @@ public class Main {
             Quiz quiz = null;
             String start;
 
-            System.out.println("You can end the application when you write \"q\". \nChoose quiz from these options: ");
+            System.out.println("You can stop the application at any time by typing \"q\"." +
+                    "\nChoose quiz from these options: ");
             for (int i = 0; i < quizzes.size(); i++) {
                 System.out.println("\"" + quizzes.get(i).getName() + "\"" + " -> " + (i + 1));
             }
@@ -39,13 +41,54 @@ public class Main {
 
             for (Question question : quiz.getQuestions()) {
                 question.showQuestion();
-                String playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
-                System.out.println("Invalid input. Try again!!!");
+                String questionType = question.getType();
+                String playerAnswer;
+
+                if (!questionType.equals("write")) {
+                    while (true) {
+                        try {
+                            playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
+                            if (playerAnswer.equals("q")) {
+                                break;
+                            } else if (!checkInput("abcd", playerAnswer) || playerAnswer.isEmpty() ||
+                                    (questionType.equals("one") && playerAnswer.length() > 1)) {
+                                throw new Exception("Invalid input. Try again!!!");
+                            }
+                            break;
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                } else {
+                    playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
+                }
+
+                if (playerAnswer.equals("q")) {
+                    start = "q";
+                    break;
+                }
                 player.checkAnswer(playerAnswer, question);
+            }
+
+            if (start.equals("q")) {
+                System.out.println("Application Quiz is closed. :(");
+                break;
             }
 
             player.printStats(quiz);
         }
+    }
+
+    public static boolean checkInput(String a, String b) {
+        ArrayList<String> lettersA = new ArrayList<>(Arrays.asList(a.split("")));
+        ArrayList<String> lettersB = new ArrayList<>(Arrays.asList(b.split("")));
+
+        for (String s : lettersB) {
+            if (!lettersA.contains(s)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static ArrayList<Quiz> createQuizzes() {
@@ -85,7 +128,7 @@ public class Main {
                         }}));
                 add(new Question("03. Which are the highest mountains in Europe?", "write",
                         new ArrayList<>() {{
-                            add(new Answer("Alps", true));
+                            add(new Answer("alps", true));
                         }}));
             }}));
             add(new Quiz("Physics", new ArrayList<>() {{
@@ -97,7 +140,7 @@ public class Main {
                             add(new Answer("d) Volume", false));
                         }}));
                 add(new Question("02. What formulas can we use to calculate acceleration(including angular)?",
-                        "one",
+                        "more",
                         new ArrayList<>() {{
                             add(new Answer("a) a = F 'total force acting on the object'" +
                                     " / m 'mass of the object'", true));
@@ -108,7 +151,7 @@ public class Main {
                             add(new Answer("d) a = (vf 'final velocity' - vi 'initial velocity') " +
                                     "/ (tf 'final time' - ti 'initial time')", true));
                         }}));
-                add(new Question("03. What is the base unit of length(according the SI)?", "one",
+                add(new Question("03. What is the base unit of length(according the SI)?", "write",
                         new ArrayList<>() {{
                             add(new Answer("meter", true));
                         }}));

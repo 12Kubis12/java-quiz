@@ -16,16 +16,16 @@ public class Question {
         System.out.println(this.getQuestionText());
         if (!this.getType().equals("write")) {
             if (this.getType().equals("one")) {
-                System.out.println("(Single correct answer -> write one option: \"a\", \"b\", \"c\" or \"d\")");
+                System.out.println("(Single correct answer -> write one option: \"a\", \"b\", \"c\" or \"d\").");
             } else {
                 System.out.println("(Multiple correct answer -> write any combination of options: " +
-                        "example fo all correct options is \"abcd\")");
+                        "example fo all correct options is \"abcd\").");
             }
             for (Answer answer : this.getAnswers()) {
                 System.out.println(answer.getAnswerText());
             }
         } else {
-            System.out.println("(Write you answer)");
+            System.out.println("(Write your answer. Check your grammar otherwise your answer may be wrong!!!).");
         }
     }
 

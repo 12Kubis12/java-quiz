@@ -12,8 +12,8 @@ public class Main {
             Quiz quiz = null;
             String start;
 
-            System.out.println("-".repeat(70));
-            System.out.println("You can stop the application at any time by typing \"q\"." +
+            System.out.println("-".repeat(100));
+            System.out.println("You can quit the application or the quiz at any time by typing \"q\"." +
                     "\nChoose quiz from these options: ");
             for (int i = 0; i < quizzes.size(); i++) {
                 System.out.println("\"" + quizzes.get(i).getName() + "\"" + " -> " + (i + 1));
@@ -28,7 +28,8 @@ public class Main {
                     quiz = quizzes.get(Integer.parseInt(start) - 1);
                     break;
                 } catch (Exception e) {
-                    System.out.println("Invalid input. Try again!!!");
+                    System.out.println("Invalid input!!! Write the number corresponding to the quiz or \"q\" " +
+                            "to quit te application.");
                 }
             }
 //            Stop application if "q" is tipped.
@@ -54,7 +55,8 @@ public class Main {
                                 break;
                             } else if (!checkInput(testString, playerAnswer) || playerAnswer.isEmpty() ||
                                     (questionType.equals("one") && playerAnswer.length() > 1)) {
-                                throw new Exception("Invalid input. Try again!!!");
+                                throw new Exception("Invalid input!!! Write the letter corresponding to the " +
+                                        "option/options or \"q\" to quit the quiz.");
                             }
                             break;
                         } catch (Exception e) {
@@ -77,7 +79,7 @@ public class Main {
                 player.printStats(quiz);
             }
 
-            System.out.println("You can choose a quiz again (\"c\") or stop the application (\"q\").");
+            System.out.println("You can choose a quiz again (\"c\") or quit the application (\"q\").");
 //            Choose to continue o to stop.
             while (true) {
                 try {
@@ -85,7 +87,7 @@ public class Main {
                     if (start.equals("q") || start.equals("c")) {
                         break;
                     } else {
-                        throw new Exception("Invalid input. Write \"c\" (continue) or \"q\" (quit). Try again!!!");
+                        throw new Exception("Invalid input!!! Write \"c\" (continue) or \"q\" (quit).");
                     }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());

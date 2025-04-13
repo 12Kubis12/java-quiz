@@ -12,6 +12,7 @@ public class Main {
             Quiz quiz = null;
             String start;
 
+            System.out.println("-".repeat(70));
             System.out.println("You can stop the application at any time by typing \"q\"." +
                     "\nChoose quiz from these options: ");
             for (int i = 0; i < quizzes.size(); i++) {
@@ -20,7 +21,7 @@ public class Main {
 //            Check input for quiz selection.
             while (true) {
                 try {
-                    start = scanner.nextLine().replaceAll("\\s", "");
+                    start = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
                     if (start.equals("q")) {
                         break;
                     }
@@ -63,21 +64,39 @@ public class Main {
                 } else {
                     playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
                 }
-//                Stop application if "q" is tipped.
+//                Stop the quiz if "q" is tipped.
                 if (playerAnswer.equals("q")) {
-                    start = "q";
                     break;
                 }
 
                 player.checkAnswer(playerAnswer, question);
+
             }
+
+            if (player.getAnsweredQuestion() == quiz.getQuestions().size()) {
+                player.printStats(quiz);
+            }
+
+            System.out.println("You can choose a quiz again (\"c\") or stop the application (\"q\").");
+//            Choose to continue o to stop.
+            while (true) {
+                try {
+                    start = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
+                    if (start.equals("q") || start.equals("c")) {
+                        break;
+                    } else {
+                        throw new Exception("Invalid input. Write \"c\" (continue) or \"q\" (quit). Try again!!!");
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+
 //            Stop application if "q" is tipped.
             if (start.equals("q")) {
                 System.out.println("Application Quiz is closed. :(");
                 break;
             }
-
-            player.printStats(quiz);
         }
     }
 
@@ -93,7 +112,8 @@ public class Main {
         }
         return true;
     }
-//    Create quizzes.
+
+    //    Create quizzes.
     public static ArrayList<Quiz> createQuizzes() {
         return new ArrayList<>() {{
             add(new Quiz("Math", new ArrayList<>() {{

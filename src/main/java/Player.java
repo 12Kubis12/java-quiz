@@ -2,6 +2,7 @@ import java.util.Arrays;
 
 public class Player {
     private int correctAnswers = 0;
+    private int answeredQuestion = 0;
 
     public void checkAnswer(String answer, Question question) {
         if (answer.equals(question.getCorrectAnswer()) ||
@@ -11,6 +12,7 @@ public class Player {
         } else {
             System.out.println("Wrong!!!");
         }
+        this.setAnsweredQuestion(this.getAnsweredQuestion() + 1);
         System.out.println();
     }
 
@@ -36,5 +38,13 @@ public class Player {
 
     public int getCorrectAnswers() {
         return correctAnswers;
+    }
+
+    public void setAnsweredQuestion(int answeredQuestion) {
+        this.answeredQuestion = answeredQuestion;
+    }
+
+    public int getAnsweredQuestion() {
+        return answeredQuestion;
     }
 }

@@ -89,6 +89,7 @@ public class Main {
             if (!lettersA.contains(s)) {
                 return false;
             }
+            lettersA.remove(s);
         }
         return true;
     }

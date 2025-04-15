@@ -33,18 +33,22 @@ public class Player {
     }
 
     public void setCorrectAnswers(int correctAnswers) {
+
         this.correctAnswers = correctAnswers;
     }
 
     public int getCorrectAnswers() {
+
         return correctAnswers;
     }
 
     public void setAnsweredQuestion(int answeredQuestion) {
+
         this.answeredQuestion = answeredQuestion;
     }
 
     public int getAnsweredQuestion() {
+
         return answeredQuestion;
     }
 }

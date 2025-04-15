@@ -1,19 +1,19 @@
 import java.util.ArrayList;
 
 public class Quiz {
-    private final String name;
-    private final ArrayList<Question> questions;
+    private final String NAME;
+    private final ArrayList<Question> QUESTIONS;
 
     public Quiz(String name, ArrayList<Question> questions) {
-        this.name = name;
-        this.questions = questions;
+        this.NAME = name;
+        this.QUESTIONS = questions;
     }
 
     public String getName() {
-        return name;
+        return NAME;
     }
 
     public ArrayList<Question> getQuestions() {
-        return questions;
+        return QUESTIONS;
     }
 }

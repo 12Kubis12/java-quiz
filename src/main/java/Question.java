@@ -2,14 +2,14 @@ import java.util.ArrayList;
 
 public class Question {
 
-    private final String questionText;
-    private final ArrayList<Answer> answers;
-    private final String type;
+    private final String QUESTION_TEXT;
+    private final ArrayList<Answer> ANSWERS;
+    private final String TYPE;
 
     public Question(String questionText, String type, ArrayList<Answer> answers) {
-        this.questionText = questionText;
-        this.type = type;
-        this.answers = answers;
+        this.QUESTION_TEXT = questionText;
+        this.TYPE = type;
+        this.ANSWERS = answers;
     }
 
     public void showQuestion() {
@@ -31,35 +31,35 @@ public class Question {
 
     public String getCorrectAnswer() {
         String target = "";
-        if (this.type.equals("one")) {
-            for (Answer answer : this.answers) {
+        if (this.TYPE.equals("one")) {
+            for (Answer answer : this.ANSWERS) {
                 if (answer.isCorrect()) {
                     target = answer.getAnswerText().substring(0, 1);
                     break;
                 }
             }
-        } else if (this.type.equals("more")) {
-            for (Answer answer : this.answers) {
+        } else if (this.TYPE.equals("more")) {
+            for (Answer answer : this.ANSWERS) {
                 if (answer.isCorrect()) {
                     target = target.concat(answer.getAnswerText().substring(0, 1));
                 }
             }
         } else {
-            target = this.answers.get(0).getAnswerText();
+            target = this.ANSWERS.get(0).getAnswerText();
         }
         return target;
     }
 
     public String getQuestionText() {
-        return questionText;
+        return QUESTION_TEXT;
     }
 
     public String getType() {
-        return type;
+        return TYPE;
     }
 
     public ArrayList<Answer> getAnswers() {
-        return answers;
+        return ANSWERS;
     }
 }
 

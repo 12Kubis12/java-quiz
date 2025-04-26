@@ -1,17 +1,17 @@
 public class Answer {
-    private final String ANSWER_TEXT;
-    private final boolean CORRECT;
+    private final String answerText;
+    private final boolean correct;
 
     Answer(String answerText, boolean correct) {
-        this.ANSWER_TEXT = answerText;
-        this.CORRECT = correct;
+        this.answerText = answerText;
+        this.correct = correct;
     }
 
     public String getAnswerText() {
-        return ANSWER_TEXT;
+        return answerText;
     }
 
-    public boolean isCorrect() {
-        return CORRECT;
+    public boolean getCorrect() {
+        return correct;
     }
 }

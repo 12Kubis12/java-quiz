@@ -9,102 +9,117 @@ public class Main {
 //        Start the quiz.
         while (true) {
             Player player = new Player();
-            Quiz quiz = null;
-            String start;
-
-            System.out.println("-".repeat(100));
-            System.out.println("You can quit the application or the quiz at any time by typing \"q\"." +
-                    "\nChoose quiz from these options: ");
-            for (int i = 0; i < quizzes.size(); i++) {
-                System.out.println("\"" + quizzes.get(i).getName() + "\"" + " -> " + (i + 1));
-            }
-//            Check input for quiz selection.
-            while (true) {
-                try {
-                    start = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
-                    if (start.equals("q")) {
-                        break;
-                    }
-                    quiz = quizzes.get(Integer.parseInt(start) - 1);
-                    break;
-                } catch (Exception e) {
-                    System.out.println("Invalid input!!! Write the number corresponding to the quiz or \"q\" " +
-                            "to quit te application.");
-                }
-            }
-//            Stop application if "q" is tipped.
-            if (start.equals("q")) {
-                System.out.println("Application Quiz is closed. :(");
+            printStartInfo(quizzes);
+//            Check input for the quiz selection.
+            String chosenQuiz = scanInputChooseQuiz(scanner, quizzes);
+//            Quit the application if "q" is tipped. (-1 is returned from the function before)
+            if (chosenQuiz.equals("q")) {
+                printQuitInfo();
                 break;
             }
-
-            System.out.println("You chose a quiz about " + quiz.getName() + ". Good luck!!!");
-            System.out.println();
+            Quiz quiz = quizzes.get(Integer.parseInt(chosenQuiz) - 1);
+            quiz.printInfo();
 //            Printing questions.
             for (Question question : quiz.getQuestions()) {
-                question.showQuestion();
-                String questionType = question.getType();
-                String testString = "abcd".substring(0, question.getAnswers().size());
-                String playerAnswer;
+                question.printQuestion();
 //                Check input for answer selections.
-                if (!questionType.equals("write")) {
-                    while (true) {
-                        try {
-                            playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
-                            if (playerAnswer.equals("q")) {
-                                break;
-                            } else if (!checkInput(testString, playerAnswer) || playerAnswer.isEmpty() ||
-                                    (questionType.equals("one") && playerAnswer.length() > 1)) {
-                                throw new Exception("Invalid input!!! Write the letter corresponding to the " +
-                                        "option/options or \"q\" to quit the quiz.");
-                            }
-                            break;
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
-                    }
-                } else {
-                    playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
-                }
-//                Stop the quiz if "q" is tipped.
+                String playerAnswer = scanInputChooseAnswer(scanner, question);
+//                Quit the quiz if "q" is tipped.
                 if (playerAnswer.equals("q")) {
                     break;
                 }
-
-                player.checkAnswer(playerAnswer, question);
-
+                question.checkAnswer(playerAnswer, player);
             }
-
             if (player.getAnsweredQuestion() == quiz.getQuestions().size()) {
-                player.printStats(quiz);
+                quiz.printStats(player);
             }
-
-            System.out.println("You can choose a quiz again (\"c\") or quit the application (\"q\").");
-//            Choose to continue o to stop.
-            while (true) {
-                try {
-                    start = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
-                    if (start.equals("q") || start.equals("c")) {
-                        break;
-                    } else {
-                        throw new Exception("Invalid input!!! Write \"c\" (continue) or \"q\" (quit).");
-                    }
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-
-//            Stop application if "q" is tipped.
-            if (start.equals("q")) {
-                System.out.println("Application Quiz is closed. :(");
+//            Choose to continue o to quit.
+            String continuation = scanInputChooseContinuation(scanner);
+//            Quit the application if "q" is tipped.
+            if (continuation.equals("q")) {
+                printQuitInfo();
                 break;
             }
         }
     }
 
-    public static boolean checkInput(String a, String b) {
-        ArrayList<String> lettersA = new ArrayList<>(Arrays.asList(a.split("")));
-        ArrayList<String> lettersB = new ArrayList<>(Arrays.asList(b.split("")));
+    public static void printStartInfo(ArrayList<Quiz> quizzes) {
+        System.out.println("-".repeat(100));
+        System.out.println("You can quit the application or the quiz at any time by typing \"q\"." +
+                "\nChoose quiz from these options: ");
+        for (int i = 0; i < quizzes.size(); i++) {
+            System.out.println("\"" + quizzes.get(i).getName() + "\"" + " -> " + (i + 1));
+        }
+    }
+
+    public static String scanInputChooseQuiz(Scanner scanner, ArrayList<Quiz> quizzes) {
+        String chosenQuiz;
+        while (true) {
+            try {
+                chosenQuiz = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
+                if (chosenQuiz.equals("q")) {
+                    break;
+                }
+                int index = Integer.parseInt(chosenQuiz) - 1;
+                if (index > (quizzes.size() - 1) || index < 0) {
+                    throw new IndexOutOfBoundsException("Invalid input!!! Write the number corresponding to the quiz " +
+                            "or \"q\" to quit the application.");
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return chosenQuiz;
+    }
+
+    public static String scanInputChooseAnswer(Scanner scanner, Question question) {
+        String questionType = question.getType();
+        String playerAnswer;
+        if (!questionType.equals("write")) {
+            String testString = "abcdefghijklmnopqrstuvwxyz".substring(0, question.getAnswers().size());
+            while (true) {
+                try {
+                    playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
+                    if (playerAnswer.equals("q")) {
+                        break;
+                    } else if (!checkInput(testString, playerAnswer) || playerAnswer.isEmpty() ||
+                            (questionType.equals("one") && playerAnswer.length() > 1)) {
+                        throw new IllegalArgumentException("Invalid input!!! Write the letter/letters corresponding " +
+                                "to the option/options or \"q\" to quit the quiz (check the question type).");
+                    }
+                    break;
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        } else {
+            playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
+        }
+        return playerAnswer;
+    }
+
+    public static String scanInputChooseContinuation(Scanner scanner) {
+        String continuation;
+        System.out.println("You can choose a quiz again (\"c\") or quit the application (\"q\").");
+        while (true) {
+            try {
+                continuation = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
+                if (continuation.equals("q") || continuation.equals("c")) {
+                    break;
+                } else {
+                    throw new IllegalArgumentException("Invalid input!!! Write \"c\" (continue) or \"q\" (quit).");
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return continuation;
+    }
+
+    public static boolean checkInput(String testString, String playerAnswer) {
+        ArrayList<String> lettersA = new ArrayList<>(Arrays.asList(testString.split("")));
+        ArrayList<String> lettersB = new ArrayList<>(Arrays.asList(playerAnswer.split("")));
 
         for (String s : lettersB) {
             if (!lettersA.contains(s)) {
@@ -115,72 +130,95 @@ public class Main {
         return true;
     }
 
-    //    Create quizzes.
+    public static void printQuitInfo() {
+        System.out.println("The application Quiz is closed. :(");
+    }
+
     public static ArrayList<Quiz> createQuizzes() {
-        return new ArrayList<>() {{
-            add(new Quiz("Math", new ArrayList<>() {{
-                add(new Question("01. What is the smallest prime number?", "one", new ArrayList<>() {{
-                    add(new Answer("a) 0", false));
-                    add(new Answer("b) 1", false));
-                    add(new Answer("c) 2", true));
-                    add(new Answer("d) 3", false));
-                }}));
-                add(new Question("02. Which are the solutions of a quadratic equation: x^2 + 2*x − 3 = 0?",
-                        "more", new ArrayList<>() {{
-                    add(new Answer("a) 1", true));
-                    add(new Answer("b) 2", false));
-                    add(new Answer("c) -3", true));
-                    add(new Answer("d) 3", false));
-                }}));
-                add(new Question("03. For which geometric shape can we use the Pythagorean theorem?",
-                        "write", new ArrayList<>() {{
-                    add(new Answer("triangle", true));
-                }}));
-            }}));
-            add(new Quiz("Geography of Europe", new ArrayList<>() {{
-                add(new Question("01. Who owns the Canary Islands?", "one", new ArrayList<>() {{
-                    add(new Answer("a) Western Sahara", false));
-                    add(new Answer("b) Portugal", false));
-                    add(new Answer("c) Morocco", false));
-                    add(new Answer("d) Spain", true));
-                }}));
-                add(new Question("02. Which countries belong to Nordic countries?", "more",
-                        new ArrayList<>() {{
-                            add(new Answer("a) Norway", true));
-                            add(new Answer("b) Estonia", false));
-                            add(new Answer("c) Finland", true));
-                            add(new Answer("d) Sweden", true));
-                        }}));
-                add(new Question("03. Which are the highest mountains in Europe?", "write",
-                        new ArrayList<>() {{
-                            add(new Answer("alps", true));
-                        }}));
-            }}));
-            add(new Quiz("Physics", new ArrayList<>() {{
-                add(new Question("01. Which of the following is not a scalar quantity?", "one",
-                        new ArrayList<>() {{
-                            add(new Answer("a) Force", true));
-                            add(new Answer("b) Mass", false));
-                            add(new Answer("c) Energy", false));
-                            add(new Answer("d) Volume", false));
-                        }}));
-                add(new Question("02. What formulas can we use to calculate acceleration(including angular)?",
-                        "more",
-                        new ArrayList<>() {{
-                            add(new Answer("a) a = F 'total force acting on the object'" +
-                                    " / m 'mass of the object'", true));
-                            add(new Answer("b) a = Δv 'change in velocity' / Δt 'acceleration time'",
-                                    true));
-                            add(new Answer("c) α = (ω2 'final angular velocity' - " +
-                                    "ω1 'initial angular velocity') / Δt 'acceleration time'", true));
-                            add(new Answer("d) a = (vf 'final velocity' - vi 'initial velocity') " +
-                                    "/ (tf 'final time' - ti 'initial time')", true));
-                        }}));
-                add(new Question("03. What is the base unit of length(according the SI)?", "write",
-                        new ArrayList<>() {{
-                            add(new Answer("meter", true));
-                        }}));
-            }}));
-        }};
+//        Create quizzes
+        Quiz mathQuiz = new Quiz("Math");
+        Quiz geographyOfEuropeQuiz = new Quiz("Geography of Europe");
+        Quiz physicsQuiz = new Quiz("Physics");
+
+//        Create questions and answers
+        Question firstMathQuestion = new Question("01. What is the smallest prime number?", "one");
+
+        firstMathQuestion.addAnswer(new Answer("a) 0", false));
+        firstMathQuestion.addAnswer(new Answer("b) 1", false));
+        firstMathQuestion.addAnswer(new Answer("c) 2", true));
+        firstMathQuestion.addAnswer(new Answer("d) 3", false));
+
+        Question secondMathQuestion = new Question("02. Which are the solutions of a quadratic equation: " +
+                "x^2 + 2*x − 3 = 0?", "more");
+
+        secondMathQuestion.addAnswer(new Answer("a) 1", true));
+        secondMathQuestion.addAnswer(new Answer("b) 2", false));
+        secondMathQuestion.addAnswer(new Answer("c) -3", true));
+        secondMathQuestion.addAnswer(new Answer("d) 3", false));
+
+        Question thirdMathQuestion = new Question("03. For which geometric shape can we use the Pythagorean" +
+                " theorem?", "write");
+
+        thirdMathQuestion.addAnswer(new Answer("triangle", true));
+
+        mathQuiz.addQuestion(firstMathQuestion);
+        mathQuiz.addQuestion(secondMathQuestion);
+        mathQuiz.addQuestion(thirdMathQuestion);
+
+        Question firstGeographyOfEuropeQuestion = new Question("01. Who owns the Canary Islands?", "one");
+
+        firstGeographyOfEuropeQuestion.addAnswer(new Answer("a) Western Sahara", false));
+        firstGeographyOfEuropeQuestion.addAnswer(new Answer("b) Portugal", false));
+        firstGeographyOfEuropeQuestion.addAnswer(new Answer("c) Morocco", false));
+        firstGeographyOfEuropeQuestion.addAnswer(new Answer("d) Spain", true));
+
+        Question secondGeographyOfEuropeQuestion = new Question("02. Which countries belong to Nordic" +
+                " countries?", "more");
+
+        secondGeographyOfEuropeQuestion.addAnswer(new Answer("a) Norway", true));
+        secondGeographyOfEuropeQuestion.addAnswer(new Answer("b) Estonia", false));
+        secondGeographyOfEuropeQuestion.addAnswer(new Answer("c) Finland", true));
+        secondGeographyOfEuropeQuestion.addAnswer(new Answer("d) Sweden", true));
+
+        Question thirdGeographyOfEuropeQuestion = new Question("03. Which are the highest mountains in Europe?",
+                "write");
+
+        thirdGeographyOfEuropeQuestion.addAnswer(new Answer("alps", true));
+
+        geographyOfEuropeQuiz.addQuestion(firstGeographyOfEuropeQuestion);
+        geographyOfEuropeQuiz.addQuestion(secondGeographyOfEuropeQuestion);
+        geographyOfEuropeQuiz.addQuestion(thirdGeographyOfEuropeQuestion);
+
+        Question firstPhysicsQuestion = new Question("01. Which of the following is not a scalar quantity?",
+                "one");
+
+        firstPhysicsQuestion.addAnswer(new Answer("a) Force", true));
+        firstPhysicsQuestion.addAnswer(new Answer("b) Mass", false));
+        firstPhysicsQuestion.addAnswer(new Answer("c) Energy", false));
+        firstPhysicsQuestion.addAnswer(new Answer("d) Volume", false));
+
+        Question secondPhysicsQuestion = new Question("02. What formulas can we use to calculate " +
+                "acceleration(including angular)?", "more");
+
+        secondPhysicsQuestion.addAnswer(new Answer("a) a = F 'total force acting on the object' " +
+                "/ m 'mass of the object'", true));
+        secondPhysicsQuestion.addAnswer(new Answer("b) a = Δv 'change in velocity' / Δt 'acceleration time'",
+                true));
+        secondPhysicsQuestion.addAnswer(new Answer("c) α = (ω2 'final angular velocity' - " +
+                "ω1 'initial angular velocity') / Δt 'acceleration time'", true));
+        secondPhysicsQuestion.addAnswer(new Answer("d) a = (vf 'final velocity' - vi 'initial velocity') " +
+                "/ (tf 'final time' - ti 'initial time')", true));
+
+        Question thirdPhysicsQuestion = new Question("03. What is the base unit of length(according the SI)?",
+                "write");
+
+        thirdPhysicsQuestion.addAnswer(new Answer("meter", true));
+
+        physicsQuiz.addQuestion(firstPhysicsQuestion);
+        physicsQuiz.addQuestion(secondPhysicsQuestion);
+        physicsQuiz.addQuestion(thirdPhysicsQuestion);
+
+        return new ArrayList<>(Arrays.asList(mathQuiz, geographyOfEuropeQuiz, physicsQuiz));
     }
 }
+

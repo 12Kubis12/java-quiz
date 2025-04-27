@@ -1,1 +1,1 @@
-# Choose from three types of quiz and guess the correct answers
+# Choose from three types of quizzes and guess the correct answers

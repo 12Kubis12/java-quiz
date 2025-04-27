@@ -30,7 +30,7 @@ public class Question {
                 System.out.println("(Multiple correct answer -> write any combination of options: " +
                         "example fo all correct options is \"abcd\").");
             }
-            for (Answer answer: this.answers) {
+            for (Answer answer : this.answers) {
                 System.out.println(answer.getAnswerText());
             }
         } else {
@@ -47,11 +47,11 @@ public class Question {
         } else {
             System.out.println("Wrong!!!");
         }
-        player.setAnsweredQuestion(player.getAnsweredQuestion() + 1);
+        player.setAnsweredQuestions(player.getAnsweredQuestions() + 1);
         System.out.println();
     }
 
-    public String getCorrectAnswer() {
+    private String getCorrectAnswer() {
         String target = "";
         if (this.type.equals("one")) {
             for (Answer answer : this.answers) {

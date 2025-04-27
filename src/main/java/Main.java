@@ -11,8 +11,8 @@ public class Main {
             Player player = new Player();
             printStartInfo(quizzes);
 //            Check input for the quiz selection.
-            String chosenQuiz = scanInputChooseQuiz(scanner, quizzes);
-//            Quit the application if "q" is tipped. (-1 is returned from the function before)
+            String chosenQuiz = scanInput(scanner, quizzes, null);
+//            Quit the application if "q" is tipped.
             if (chosenQuiz.equals("q")) {
                 printQuitInfo();
                 break;
@@ -23,18 +23,19 @@ public class Main {
             for (Question question : quiz.getQuestions()) {
                 question.printQuestion();
 //                Check input for answer selections.
-                String playerAnswer = scanInputChooseAnswer(scanner, question);
+                String playerAnswer = scanInput(scanner, null, question);
 //                Quit the quiz if "q" is tipped.
                 if (playerAnswer.equals("q")) {
                     break;
                 }
                 question.checkAnswer(playerAnswer, player);
             }
-            if (player.getAnsweredQuestion() == quiz.getQuestions().size()) {
+            if (player.getAnsweredQuestions() == quiz.getQuestions().size()) {
                 quiz.printStats(player);
             }
 //            Choose to continue o to quit.
-            String continuation = scanInputChooseContinuation(scanner);
+            System.out.println("You can choose a quiz again (\"c\") or quit the application (\"q\").");
+            String continuation = scanInput(scanner, null, null);
 //            Quit the application if "q" is tipped.
             if (continuation.equals("q")) {
                 printQuitInfo();
@@ -52,82 +53,65 @@ public class Main {
         }
     }
 
-    public static String scanInputChooseQuiz(Scanner scanner, ArrayList<Quiz> quizzes) {
-        String chosenQuiz;
+    public static String scanInput(Scanner scanner, ArrayList<Quiz> quizzes, Question question) {
+        String scannedInput;
+        String message = "";
+
         while (true) {
             try {
-                chosenQuiz = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
-                if (chosenQuiz.equals("q")) {
-                    break;
-                }
-                int index = Integer.parseInt(chosenQuiz) - 1;
-                if (index > (quizzes.size() - 1) || index < 0) {
-                    throw new IndexOutOfBoundsException("Invalid input!!! Write the number corresponding to the quiz " +
-                            "or \"q\" to quit the application.");
-                }
-                break;
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return chosenQuiz;
-    }
-
-    public static String scanInputChooseAnswer(Scanner scanner, Question question) {
-        String questionType = question.getType();
-        String playerAnswer;
-        if (!questionType.equals("write")) {
-            String testString = "abcdefghijklmnopqrstuvwxyz".substring(0, question.getAnswers().size());
-            while (true) {
-                try {
-                    playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
-                    if (playerAnswer.equals("q")) {
+                scannedInput = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
+//                Scan continuation
+                if (quizzes == null && question == null) {
+                    if (scannedInput.equals("q") || scannedInput.equals("c")) {
                         break;
-                    } else if (!checkInput(testString, playerAnswer) || playerAnswer.isEmpty() ||
-                            (questionType.equals("one") && playerAnswer.length() > 1)) {
-                        throw new IllegalArgumentException("Invalid input!!! Write the letter/letters corresponding " +
-                                "to the option/options or \"q\" to quit the quiz (check the question type).");
+                    } else {
+                        message = "Invalid input!!! Write \"c\" (continue) or \"q\" (quit).";
+                        throw new IllegalArgumentException();
                     }
-                    break;
-                } catch (Exception e) {
-                    System.out.println(e.getMessage());
-                }
-            }
-        } else {
-            playerAnswer = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
-        }
-        return playerAnswer;
-    }
-
-    public static String scanInputChooseContinuation(Scanner scanner) {
-        String continuation;
-        System.out.println("You can choose a quiz again (\"c\") or quit the application (\"q\").");
-        while (true) {
-            try {
-                continuation = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
-                if (continuation.equals("q") || continuation.equals("c")) {
-                    break;
                 } else {
-                    throw new IllegalArgumentException("Invalid input!!! Write \"c\" (continue) or \"q\" (quit).");
+                    if (scannedInput.equals("q")) {
+                        break;
+//                    Scan quiz
+                    } else if (question == null) {
+                        message = "Invalid input!!! Write the number corresponding to the quiz or \"q\" to quit " +
+                                "the application.";
+                        int index = Integer.parseInt(scannedInput) - 1;
+                        if (index > (quizzes.size() - 1) || index < 0) {
+                            throw new IndexOutOfBoundsException();
+                        }
+                        break;
+//                    Scan answer
+                    } else if (quizzes == null) {
+                        if (!question.getType().equals("write")) {
+                            String testString = "abcdefghijklmnopqrstuvwxyz".substring(0, question.getAnswers().size());
+                            if (checkMultipleAnswer(testString, scannedInput) || scannedInput.isEmpty() ||
+                                    (question.getType().equals("one") && scannedInput.length() > 1)) {
+                                message = "Invalid input!!! Write the letter/letters corresponding to the" +
+                                        " option/options or \"q\" to quit the quiz (check the question type).";
+                                throw new IllegalArgumentException();
+                            }
+                        }
+                        break;
+                    }
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println(message);
             }
         }
-        return continuation;
+        return scannedInput;
     }
 
-    public static boolean checkInput(String testString, String playerAnswer) {
+    public static boolean checkMultipleAnswer(String testString, String playerAnswer) {
         ArrayList<String> lettersA = new ArrayList<>(Arrays.asList(testString.split("")));
         ArrayList<String> lettersB = new ArrayList<>(Arrays.asList(playerAnswer.split("")));
 
         for (String s : lettersB) {
             if (!lettersA.contains(s)) {
-                return false;
+                return true;
             }
             lettersA.remove(s);
         }
-        return true;
+        return false;
     }
 
     public static void printQuitInfo() {

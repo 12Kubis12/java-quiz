@@ -18,7 +18,7 @@ public class Quiz {
     }
 
     public void printInfo() {
-        System.out.println("You chose a quiz about " + this.getName() + ". Good luck!!!");
+        System.out.println("You chose a quiz about " + this.name + ". Good luck!!!");
         System.out.println();
     }
 

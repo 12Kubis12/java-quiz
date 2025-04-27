@@ -1,6 +1,6 @@
 public class Player {
     private int correctAnswers = 0;
-    private int answeredQuestion = 0;
+    private int answeredQuestions = 0;
 
     public int getCorrectAnswers() {
         return correctAnswers;
@@ -10,11 +10,11 @@ public class Player {
         this.correctAnswers = correctAnswers;
     }
 
-    public int getAnsweredQuestion() {
-        return answeredQuestion;
+    public int getAnsweredQuestions() {
+        return answeredQuestions;
     }
 
-    public void setAnsweredQuestion(int answeredQuestion) {
-        this.answeredQuestion = answeredQuestion;
+    public void setAnsweredQuestions(int answeredQuestion) {
+        this.answeredQuestions = answeredQuestion;
     }
 }

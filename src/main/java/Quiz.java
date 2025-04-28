@@ -18,7 +18,8 @@ public class Quiz {
     }
 
     public void printInfo() {
-        System.out.println("You chose a quiz about " + this.name + ". Good luck!!!");
+        System.out.println("You chose a quiz about " + this.name + ".\nThere are " + this.questions.size() +
+                " questions. Good luck!!!");
         System.out.println();
     }
 
@@ -29,10 +30,10 @@ public class Quiz {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public ArrayList<Question> getQuestions() {
-        return questions;
+        return this.questions;
     }
 }

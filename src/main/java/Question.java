@@ -83,11 +83,11 @@ public class Question {
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public ArrayList<Answer> getAnswers() {
-        return answers;
+        return this.answers;
     }
 }
 

@@ -8,10 +8,10 @@ public class Answer {
     }
 
     public String getAnswerText() {
-        return answerText;
+        return this.answerText;
     }
 
     public boolean getCorrect() {
-        return correct;
+        return this.correct;
     }
 }

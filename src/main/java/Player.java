@@ -3,7 +3,7 @@ public class Player {
     private int answeredQuestions = 0;
 
     public int getCorrectAnswers() {
-        return correctAnswers;
+        return this.correctAnswers;
     }
 
     public void setCorrectAnswers(int correctAnswers) {
@@ -11,7 +11,7 @@ public class Player {
     }
 
     public int getAnsweredQuestions() {
-        return answeredQuestions;
+        return this.answeredQuestions;
     }
 
     public void setAnsweredQuestions(int answeredQuestion) {

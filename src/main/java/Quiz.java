@@ -13,10 +13,6 @@ public class Quiz {
         this.questions.add(question);
     }
 
-    public void removeQuestion(int index) {
-        this.questions.remove(index);
-    }
-
     public void printInfo() {
         System.out.println("You chose a quiz about " + this.name + ".\nThere are " + this.questions.size() +
                 " questions. Good luck!!!");

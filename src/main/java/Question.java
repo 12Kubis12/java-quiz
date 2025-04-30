@@ -17,10 +17,6 @@ public class Question {
         this.answers.add(answer);
     }
 
-    public void removeAnswer(int index) {
-        this.answers.remove(index);
-    }
-
     public void printQuestion() {
         System.out.println(this.questionText);
         if (!this.type.equals("write")) {

@@ -6,25 +6,25 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<Quiz> quizzes = createQuizzes();
         Scanner scanner = new Scanner(System.in);
-//        Start the quiz.
+// Start the quiz.
         while (true) {
             Player player = new Player();
             printStartInfo(quizzes);
-//            Check input for the quiz selection.
+// Check input for the quiz selection.
             String chosenQuiz = scanInput(scanner, quizzes, null);
-//            Quit the application if "q" is tipped.
+// Quit the application if "q" is tipped.
             if (chosenQuiz.equals("q")) {
                 printQuitInfo();
                 break;
             }
             Quiz quiz = quizzes.get(Integer.parseInt(chosenQuiz) - 1);
             quiz.printInfo();
-//            Printing questions.
+// Printing questions.
             for (Question question : quiz.getQuestions()) {
                 question.printQuestion();
-//                Check input for answer selections.
+// Check input for answer selections.
                 String playerAnswer = scanInput(scanner, null, question);
-//                Quit the quiz if "q" is tipped.
+// Quit the quiz if "q" is tipped.
                 if (playerAnswer.equals("q")) {
                     break;
                 }
@@ -33,10 +33,10 @@ public class Main {
             if (player.getAnsweredQuestions() == quiz.getQuestions().size()) {
                 quiz.printStats(player);
             }
-//            Choose to continue o to quit.
+// Choose to continue o to quit.
             System.out.println("You can choose a quiz again (\"c\") or quit the application (\"q\").");
             String continuation = scanInput(scanner, null, null);
-//            Quit the application if "q" is tipped.
+// Quit the application if "q" is tipped.
             if (continuation.equals("q")) {
                 printQuitInfo();
                 break;
@@ -60,7 +60,7 @@ public class Main {
         while (true) {
             try {
                 scannedInput = scanner.nextLine().replaceAll("\\s", "").toLowerCase();
-//                Scan continuation
+// Scan continuation
                 if (quizzes == null && question == null) {
                     if (scannedInput.equals("q") || scannedInput.equals("c")) {
                         break;
@@ -71,7 +71,7 @@ public class Main {
                 } else {
                     if (scannedInput.equals("q")) {
                         break;
-//                    Scan quiz
+// Scan quiz
                     } else if (question == null) {
                         message = "Invalid input!!! Write the number corresponding to the quiz or \"q\" to quit " +
                                 "the application.";
@@ -80,7 +80,7 @@ public class Main {
                             throw new IndexOutOfBoundsException();
                         }
                         break;
-//                    Scan answer
+// Scan answer
                     } else if (quizzes == null) {
                         if (!question.getType().equals("write")) {
                             String testString = "abcdefghijklmnopqrstuvwxyz".substring(0, question.getAnswers().size());
@@ -119,12 +119,12 @@ public class Main {
     }
 
     public static ArrayList<Quiz> createQuizzes() {
-//        Create quizzes
+// Create quizzes
         Quiz mathQuiz = new Quiz("Math");
         Quiz geographyOfEuropeQuiz = new Quiz("Geography of Europe");
         Quiz physicsQuiz = new Quiz("Physics");
 
-//        Create questions and answers
+// Create questions and answers
         Question firstMathQuestion = new Question("01. What is the smallest prime number?", "one");
 
         firstMathQuestion.addAnswer(new Answer("a) 0", false));

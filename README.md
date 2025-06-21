@@ -16,6 +16,7 @@ A simple Java-based quiz application that allows users to test their knowledge o
 ## 🛠️ Technologies Used
 
 - Java 17
+- Maven
 
 ---
 
